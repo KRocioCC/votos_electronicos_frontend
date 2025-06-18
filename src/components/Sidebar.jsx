@@ -14,14 +14,14 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="sidebar w-1/5 h-full fixed bg-gray-800 text-white">
+    <div className="sidebar w-1/5 h-full fixed bg-red-900 text-white">
       <div className="p-4">
-        <h1 className="text-xl font-bold mb-6">LOGO</h1>
+        <h1 className="text-xl font-bold mb-6">UMSA</h1>
         <nav className="space-y-2">
           <Link
             to="/"
-            className={`flex items-center p-3 rounded-lg hover:bg-blue-700 ${
-              location.pathname === "/" ? "bg-blue-500" : ""
+            className={`flex items-center p-3 rounded-lg hover:bg-blue-900 ${
+              location.pathname === "/" ? "bg-blue-900" : ""
             }`}
           >
             <FaHome className="mr-3" />
@@ -29,17 +29,17 @@ const Sidebar = () => {
           </Link>
           <Link
             to="/about"
-            className={`flex items-center p-3 rounded-lg hover:bg-blue-700 ${
-              location.pathname === "/about" ? "bg-blue-500" : ""
+            className={`flex items-center p-3 rounded-lg hover:bg-blue-900 ${
+              location.pathname === "/about" ? "bg-blue-900" : ""
             }`}
           >
             <FaUser className="mr-3" />
-            Acerca de
+            Candidatos
           </Link>
           <Link
             to="/contact"
-            className={`flex items-center p-3 rounded-lg hover:bg-blue-700 ${
-              location.pathname === "/contact" ? "bg-blue-500" : ""
+            className={`flex items-center p-3 rounded-lg hover:bg-blue-900 ${
+              location.pathname === "/contact" ? "bg-blue-900" : ""
             }`}
           >
             <FaEnvelope className="mr-3" />
@@ -51,8 +51,8 @@ const Sidebar = () => {
             <>
               <Link
                 to="/estudiantes"
-                className={`flex items-center p-3 rounded-lg hover:bg-blue-700 ${
-                  location.pathname === "/estudiantes" ? "bg-blue-500" : ""
+                className={`flex items-center p-3 rounded-lg hover:bg-blue-900 ${
+                  location.pathname === "/estudiantes" ? "bg-blue-900" : ""
                 }`}
               >
                 <FaUsers className="mr-3" />
@@ -60,8 +60,8 @@ const Sidebar = () => {
               </Link>
               <Link
                 to="/votos_dashboard"
-                className={`flex items-center p-3 rounded-lg hover:bg-blue-700 ${
-                  location.pathname === "/votos_dashboard" ? "bg-blue-500" : ""
+                className={`flex items-center p-3 rounded-lg hover:bg-blue-900 ${
+                  location.pathname === "/votos_dashboard" ? "bg-blue-900" : ""
                 }`}
               >
                 <MdBarChart className="mr-3" />
@@ -69,12 +69,23 @@ const Sidebar = () => {
               </Link>
               <Link
                 to="/votos_par"
-                className={`flex items-center p-3 rounded-lg hover:bg-blue-700 ${
-                  location.pathname === "/votos_par" ? "bg-blue-500" : ""
+                className={`flex items-center p-3 rounded-lg hover:bg-blue-900 ${
+                  location.pathname === "/votos_par" ? "bg-blue-900" : ""
                 }`}
               >
                 <MdBarChart className="mr-3" />
                 Votos por Partido
+              </Link>
+
+              {/* Auditoría */}
+              <Link
+                to="/auditoria_estudiantes"
+                className={`flex items-center p-3 rounded-lg hover:bg-blue-900 ${
+                  location.pathname === "/auditoria_estudiantes" ? "bg-blue-900" : ""
+                }`}
+              >
+                <MdBarChart className="mr-3" />
+                Auditoría Estudiantes
               </Link>
             </>
           )}
@@ -83,8 +94,8 @@ const Sidebar = () => {
           {(usuario?.tipo === 'estudiante' || usuario?.tipo === 'docente') && (
             <Link
               to="/votar"
-              className={`flex items-center p-3 rounded-lg hover:bg-blue-700 ${
-                location.pathname === "/votar" ? "bg-blue-500" : ""
+              className={`flex items-center p-3 rounded-lg hover:bg-blue-900 ${
+                location.pathname === "/votar" ? "bg-blue-900" : ""
               }`}
             >
               <MdBarChart className="mr-3" />
@@ -96,7 +107,7 @@ const Sidebar = () => {
           {usuario && (
             <button
               onClick={handleLogout}
-              className="flex items-center p-3 rounded-lg hover:bg-red-700 w-full mt-6 bg-red-600"
+              className="flex items-center p-3 rounded-lg hover:bg-red-800 w-full mt-6 bg-red-700"
             >
               <FaSignOutAlt className="mr-3" />
               Cerrar sesión

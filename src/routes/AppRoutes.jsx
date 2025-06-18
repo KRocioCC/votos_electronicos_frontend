@@ -8,6 +8,7 @@ import Estudiante from '../pages/Estudiantes';
 import Votos from '../pages/Votos';
 import VotosPar from '../pages/VotosPar';
 import Votar from '../pages/Votar';
+import AuditoriaEstudiantes from '../pages/AuditoriaEstudiantes';
 
 import RequireAuth from '../components/RequireAuth';
 import Login from '../auth/Login';
@@ -46,6 +47,14 @@ const AppRoutes = () => {
           element={
             <RequireAuth allowedTypes={['admin']}>
               <VotosPar />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="auditoria_estudiantes"
+          element={
+            <RequireAuth allowedTypes={['admin']}>
+              <AuditoriaEstudiantes />
             </RequireAuth>
           }
         />

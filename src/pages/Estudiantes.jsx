@@ -1,6 +1,4 @@
-// src/pages/Estudiantes.jsx
 import React, { useState, useEffect } from 'react';
-import Button from '../components/Button';
 import estudianteService from '../services/estudianteService';
 
 const Estudiantes = () => {
@@ -100,7 +98,7 @@ const Estudiantes = () => {
         <h1 className="text-3xl font-bold text-slate-800 mb-4">Administrar Estudiantes</h1>
         <button
           onClick={handleAddClick}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" // Cambia red-600/700 por blue-600/700
+          className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         >
           Agregar Estudiante
         </button>
@@ -112,14 +110,17 @@ const Estudiantes = () => {
           <p className="col-span-full text-center text-slate-600">No hay estudiantes disponibles.</p>
         ) : (
           estudiantes.map((estudiante) => (
-            <div key={estudiante.idEstudiante} className="bg-red-100 rounded-lg p-6 shadow-lg hover:shadow-2xl transition-shadow border border-red-200">
+            <div
+              key={estudiante.idEstudiante}
+              className="bg-blue-900 rounded-lg p-6 shadow-lg hover:shadow-2xl transition-shadow border border-blue-900"
+            >
               <div className="flex justify-between items-start mb-4">
-                <h3 className="text-lg font-semibold text-slate-800">
+                <h3 className="text-lg font-semibold text-white">
                   {estudiante.nombre} {estudiante.apellidoPat} {estudiante.apellidoMat}
                 </h3>
                 <div className="flex space-x-2">
                   <button
-                    className="bg-indigo-500 hover:bg-indigo-600 text-white py-1 px-3 rounded text-sm" // Cambia red-500/600 por indigo-500/600 (lila)
+                    className="bg-yellow-500 hover:bg-yellow-600 text-white py-1 px-3 rounded text-sm"
                     onClick={() => handleEditClick(estudiante)}
                   >
                     Editar
@@ -133,10 +134,10 @@ const Estudiantes = () => {
                 </div>
               </div>
 
-              <div className="bg-red-50 rounded-lg p-4 min-h-24">
-                <p className="text-slate-700 mb-1"><span className="font-semibold">Carrera:</span> {estudiante.carrera}</p>
-                <p className="text-slate-700 mb-1"><span className="font-semibold">Correo:</span> {estudiante.correoInstitucional}</p>
-                <p className="text-slate-700"><span className="font-semibold">Voto:</span> {estudiante.voto ? 'Sí' : 'No'}</p>
+              <div className="bg-blue-50 rounded-lg p-4 min-h-24 text-blue-900">
+                <p className="mb-1"><span className="font-semibold">Carrera:</span> {estudiante.carrera}</p>
+                <p className="mb-1"><span className="font-semibold">Correo:</span> {estudiante.correoInstitucional}</p>
+                <p><span className="font-semibold">Voto:</span> {estudiante.voto ? 'Sí' : 'No'}</p>
               </div>
             </div>
           ))
@@ -230,21 +231,14 @@ const Estudiantes = () => {
                 <label className="block text-slate-700 text-sm font-bold mb-2" htmlFor="voto">
                   Voto
                 </label>
-                {!isEditing ? (
-                  <select
-                    id="voto"
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500"
-                    value={currentEstudiante.voto}
-                    onChange={(e) => setCurrentEstudiante({ ...currentEstudiante, voto: e.target.value === 'true' })}
-                  >
-                    <option value={true}>Votó</option>
-                    <option value={false}>No Votó</option>
-                  </select>
-                ) : (
-                  <div className="py-2 px-3 bg-gray-100 rounded text-slate-700">
-                    {currentEstudiante.voto ? 'Votó' : 'No Votó'}
-                  </div>
-                )}
+                <div className="mb-4">
+                <label className="block text-slate-700 text-sm font-bold mb-2" htmlFor="voto">
+                  Voto
+                </label>
+                <div className="py-2 px-3 bg-gray-100 rounded text-slate-700">
+                  No Votó
+                </div>
+              </div>
               </div>
 
               <div className="flex justify-end space-x-2">
