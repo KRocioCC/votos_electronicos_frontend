@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import partidoService from '../services/partidoService';
 import candidatoService from '../services/candidatoService';
 import votosService from '../services/votosService';
+import estudianteService from '../services/estudianteService';
+import docenteService from '../services/docenteService';
 
-// Importa tus imágenes locales
 import partidoUno from '../images/partido_uno.png';
 import partidoDos from '../images/partido_dos.png';
 import partidoTres from '../images/partido_tres.png';
 import partidoCuatro from '../images/partido_cuatro.png';
 
-// Mapea el idPartido a la imagen correspondiente
 const imagenesPartidos = {
     1: partidoUno,
     2: partidoDos,
@@ -22,6 +23,12 @@ const Votar = () => {
     const [candidatos, setCandidatos] = useState([]);
     const [mensaje, setMensaje] = useState('');
     const [loading, setLoading] = useState(true);
+    const [yaVoto, setYaVoto] = useState(false);
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
+    const [showYaVoto, setShowYaVoto] = useState(false);
+    const [votoPendiente, setVotoPendiente] = useState({ partidoId: null, candidatoId: null });
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -30,9 +37,29 @@ const Votar = () => {
                 const candidatosData = await candidatoService.getAllCandidatos();
                 setPartidos(partidosData);
                 setCandidatos(candidatosData);
-                // Para depuración, revisa la estructura de los datos:
-                // console.log('Partidos:', partidosData);
-                // console.log('Candidatos:', candidatosData);
+
+                const usuario = JSON.parse(localStorage.getItem('usuario'));
+                if (usuario?.tipo === 'estudiante') {
+                    const est = await estudianteService.getEstudianteById(usuario.id);
+                    if (est.voto === true) {
+                        setShowYaVoto(true);
+                        setTimeout(() => {
+                            localStorage.removeItem('usuario');
+                            navigate('/login');
+                        }, 2000);
+                        return;
+                    }
+                } else if (usuario?.tipo === 'docente') {
+                    const doc = await docenteService.getDocenteById(usuario.id);
+                    if (doc.voto === true) {
+                        setShowYaVoto(true);
+                        setTimeout(() => {
+                            localStorage.removeItem('usuario');
+                            navigate('/login');
+                        }, 2000);
+                        return;
+                    }
+                }
             } catch (error) {
                 setMensaje('Error al cargar partidos o candidatos');
             } finally {
@@ -40,25 +67,39 @@ const Votar = () => {
             }
         };
         fetchData();
-    }, []);
+    }, [navigate]);
 
-    // Relaciona candidatos con su partido
     const getCandidatosPorPartido = (partidoId) =>
         candidatos.filter(c => c.idPartido === partidoId);
 
-    // Simula el id del votante (estudiante o docente)
-    const votanteId = 1; // Cambia esto cuando tengas login
+    const handleOpenConfirm = (partidoId, candidatoId) => {
+        setVotoPendiente({ partidoId, candidatoId });
+        setShowConfirm(true);
+    };
 
-    const handleVotar = async (partidoId, candidatoId) => {
+    const handleVotar = async () => {
+        setShowConfirm(false);
         try {
-            await votosService.createVoto({
-                estudianteId: votanteId, // o docenteId según corresponda
-                partidoId,
-                candidatoId
-            });
-            setMensaje('¡Voto registrado con éxito!');
+            const usuario = JSON.parse(localStorage.getItem('usuario'));
+            let votoData = { idPartido: votoPendiente.partidoId, idCandidato: votoPendiente.candidatoId };
+
+            if (usuario?.tipo === 'estudiante') {
+                votoData.idEstudiante = usuario.id;
+            } else if (usuario?.tipo === 'docente') {
+                votoData.idDocente = usuario.id;
+            }
+
+            await votosService.createVoto(votoData);
+            setShowSuccess(true);
+            setYaVoto(true);
+            setTimeout(() => {
+                setShowSuccess(false);
+                localStorage.removeItem('usuario');
+                navigate('/login');
+            }, 1000);
         } catch (error) {
             setMensaje('Error al registrar el voto');
+            setTimeout(() => setMensaje(''), 3000);
         }
     };
 
@@ -82,7 +123,8 @@ const Votar = () => {
                                     <span>{candidato.cargo}</span>
                                     <button
                                         className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
-                                        onClick={() => handleVotar(partido.idPartido, candidato.idCandidato)}
+                                        onClick={() => handleOpenConfirm(partido.idPartido, candidato.idCandidato)}
+                                        disabled={yaVoto}
                                     >
                                         Votar
                                     </button>
@@ -92,6 +134,49 @@ const Votar = () => {
                     </div>
                 ))}
             </div>
+
+            {/* Modal de confirmación */}
+            {showConfirm && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
+                    <div className="bg-white rounded-lg p-8 shadow-lg text-center">
+                        <h3 className="text-xl font-bold mb-4 text-blue-700">¿Seguro que quieres votar?</h3>
+                        <div className="flex justify-center gap-4">
+                            <button
+                                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+                                onClick={handleVotar}
+                            >
+                                Sí, votar
+                            </button>
+                            <button
+                                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+                                onClick={() => setShowConfirm(false)}
+                            >
+                                Cancelar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Modal de éxito */}
+            {showSuccess && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
+                    <div className="bg-white rounded-lg p-8 shadow-lg text-center">
+                        <h3 className="text-xl font-bold mb-2 text-green-700">¡Voto registrado!</h3>
+                        <p className="text-gray-700">Saliendo del sistema...</p>
+                    </div>
+                </div>
+            )}
+
+            {/* Modal ya votó */}
+            {showYaVoto && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
+                    <div className="bg-white rounded-lg p-8 shadow-lg text-center">
+                        <h3 className="text-xl font-bold mb-2 text-red-700">Usted ya votó</h3>
+                        <p className="text-gray-700">Saliendo del sistema...</p>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
