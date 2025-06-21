@@ -5,12 +5,13 @@ const Estudiantes = () => {
   const [estudiantes, setEstudiantes] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentEstudiante, setCurrentEstudiante] = useState({ 
-    idEstudiante: null, 
     nombre: '', 
     apellidoPat: '', 
     apellidoMat: '', 
     carrera: '', 
     correoInstitucional: '', 
+    anioIngreso: '',
+
     voto: false 
   });
   const [isEditing, setIsEditing] = useState(false);
@@ -37,12 +38,12 @@ const Estudiantes = () => {
 
   const handleAddClick = () => {
     setCurrentEstudiante({ 
-      idEstudiante: null, 
       nombre: '', 
       apellidoPat: '', 
       apellidoMat: '', 
       carrera: '', 
       correoInstitucional: '', 
+      anioIngreso: '',
       voto: false 
     });
     setIsEditing(false);
@@ -56,22 +57,31 @@ const Estudiantes = () => {
   };
 
   const handleDeleteClick = async (id) => {
-    if (window.confirm('¿Estás seguro de eliminar este estudiante?')) {
-      try {
-        await estudianteService.deleteEstudiante(id);
-        fetchEstudiantes();
-      } catch (err) {
-        console.error("Error al eliminar estudiante:", err);
-        alert("Hubo un error al eliminar el estudiante.");
-      }
+  const estudiante = estudiantes.find(e => e.id === id);
+
+  if (estudiante?.voto) {
+    alert('⚠️ No se puede eliminar a un estudiante que ya votó.');
+    return;
+  }
+
+  if (window.confirm('¿Estás seguro de eliminar este estudiante?')) {
+    try {
+      await estudianteService.deleteEstudiante(id);
+      fetchEstudiantes();
+    } catch (err) {
+      console.error("Error inesperado al eliminar estudiante:", err);
+      alert("Hubo un error al eliminar el estudiante.");
     }
-  };
+  }
+};
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (isEditing) {
-        await estudianteService.updateEstudiante(currentEstudiante.idEstudiante, currentEstudiante);
+        await estudianteService.updateEstudiante(currentEstudiante.id, currentEstudiante);
       } else {
         await estudianteService.createEstudiante(currentEstudiante);
       }
@@ -111,7 +121,7 @@ const Estudiantes = () => {
         ) : (
           estudiantes.map((estudiante) => (
             <div
-              key={estudiante.idEstudiante}
+              key={estudiante.id}
               className="bg-blue-900 rounded-lg p-6 shadow-lg hover:shadow-2xl transition-shadow border border-blue-900"
             >
               <div className="flex justify-between items-start mb-4">
@@ -127,7 +137,7 @@ const Estudiantes = () => {
                   </button>
                   <button
                     className="bg-red-700 hover:bg-red-800 text-white py-1 px-3 rounded text-sm"
-                    onClick={() => handleDeleteClick(estudiante.idEstudiante)}
+                    onClick={() => handleDeleteClick(estudiante.id)}
                   >
                     Eliminar
                   </button>
@@ -226,6 +236,26 @@ const Estudiantes = () => {
                   required
                 />
               </div>
+              <div className="mb-4">
+                <label className="block text-slate-700 text-sm font-bold mb-2" htmlFor="anioIngreso">
+                  Año de Ingreso
+                </label>
+                <input
+                  id="anioIngreso"
+                  type="number"
+                  placeholder="Ej. 2023"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500"
+                  value={currentEstudiante.anioIngreso}
+                  onChange={(e) =>
+                    setCurrentEstudiante({
+                      ...currentEstudiante,
+                      anioIngreso: parseInt(e.target.value) || ''
+                    })
+                  }
+                  required
+                />
+              </div>
+
 
               <div className="mb-4">
                 <label className="block text-slate-700 text-sm font-bold mb-2" htmlFor="voto">

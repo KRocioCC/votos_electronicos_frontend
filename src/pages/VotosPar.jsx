@@ -29,7 +29,7 @@ const VotosPar = () => {
     useEffect(() => {
         const fetchConteo = async () => {
             try {
-                const data = await votosService.getConteoVotosPorPartidoYCandidato();
+                const data = await votosService.getConteoVotosPorPartido();
                 setConteo(data);
             } catch (err) {
                 setError('No se pudo cargar el conteo');
@@ -43,9 +43,8 @@ const VotosPar = () => {
     // Obtener partidos únicos
     const partidos = [...new Set(conteo.map(c => c.nombrePartido))];
 
-    // Gráfico de barras: cada barra es un candidato, color por partido
     const barData = {
-        labels: conteo.map(c => `${c.nombreCandidato} (${c.nombrePartido})`),
+        labels: conteo.map(c => ` (${c.nombrePartido})`),
         datasets: [
             {
                 label: 'Votos',
@@ -91,7 +90,7 @@ const VotosPar = () => {
 
     return (
         <div style={{ maxWidth: 1100, margin: '40px auto', background: '#fff', borderRadius: 12, boxShadow: '0 2px 12px #0001', padding: 32 }}>
-            <h2 style={{ textAlign: 'center', marginBottom: 24 }}>Votos por Partido y Candidato</h2>
+            <h2 style={{ textAlign: 'center', marginBottom: 24 }}>Votos por Partido</h2>
             {loading && <p>Cargando...</p>}
             {error && <p style={{ color: 'red' }}>{error}</p>}
             {!loading && !error && conteo.length > 0 && (
@@ -109,7 +108,6 @@ const VotosPar = () => {
                             <thead>
                                 <tr style={{ background: '#f0f0f0' }}>
                                     <th style={{ padding: 8, border: '1px solid #ddd' }}>Partido</th>
-                                    <th style={{ padding: 8, border: '1px solid #ddd' }}>Candidato</th>
                                     <th style={{ padding: 8, border: '1px solid #ddd' }}>Votos</th>
                                 </tr>
                             </thead>
@@ -117,7 +115,6 @@ const VotosPar = () => {
                                 {conteo.map((row, idx) => (
                                     <tr key={idx}>
                                         <td style={{ padding: 8, border: '1px solid #ddd', color: getColorForParty(row.nombrePartido, partidos), fontWeight: 'bold' }}>{row.nombrePartido}</td>
-                                        <td style={{ padding: 8, border: '1px solid #ddd' }}>{row.nombreCandidato}</td>
                                         <td style={{ padding: 8, border: '1px solid #ddd' }}>{row.totalVotos}</td>
                                     </tr>
                                 ))}

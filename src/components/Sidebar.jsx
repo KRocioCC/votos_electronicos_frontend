@@ -65,7 +65,7 @@ const Sidebar = () => {
                 }`}
               >
                 <MdBarChart className="mr-3" />
-                Votos Dashboard
+                Votos por carrera
               </Link>
               <Link
                 to="/votos_par"
@@ -74,7 +74,7 @@ const Sidebar = () => {
                 }`}
               >
                 <MdBarChart className="mr-3" />
-                Votos por Partido
+                Votos Dashboard
               </Link>
 
               {/* Auditoría */}

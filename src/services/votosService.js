@@ -55,16 +55,29 @@ const votosService = {
             throw error;
         }
     },
-    // Obtener el conteo de votos por partido y candidato
-    getConteoVotosPorPartidoYCandidato: async () => {
+    // Obtener el conteo de votos por partido
+    getConteoVotosPorPartido: async () => {
         try {
-            const response = await api.get('/votos/votos/por-partido-candidato');
+            const response = await api.get('/votos/votos/por-partido');
             return response.data;
         } catch (error) {
-            console.error("Error al obtener conteo por partido y candidato:", error.response ? error.response.data : error.message);
+            console.error("Error al obtener conteo por partido:", error.response ? error.response.data : error.message);
+            throw error;
+        }
+    },
+
+        // Obtener el top de carreras con más votos
+    getConteoVotosPorCarrera: async () => {
+        try {
+            const response = await api.get('/votos/votos/top-carreras');
+            return response.data;
+        } catch (error) {
+            console.error("Error al obtener conteo por carrera:", error.response ? error.response.data : error.message);
             throw error;
         }
     }
+
+
 };
 
 export default votosService;

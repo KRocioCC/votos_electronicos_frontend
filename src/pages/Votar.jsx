@@ -27,7 +27,7 @@ const Votar = () => {
     const [showConfirm, setShowConfirm] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
     const [showYaVoto, setShowYaVoto] = useState(false);
-    const [votoPendiente, setVotoPendiente] = useState({ partidoId: null, candidatoId: null });
+    const [partidoSeleccionado, setPartidoSeleccionado] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -69,11 +69,8 @@ const Votar = () => {
         fetchData();
     }, [navigate]);
 
-    const getCandidatosPorPartido = (partidoId) =>
-        candidatos.filter(c => c.idPartido === partidoId);
-
-    const handleOpenConfirm = (partidoId, candidatoId) => {
-        setVotoPendiente({ partidoId, candidatoId });
+    const handleOpenConfirm = (partidoId) => {
+        setPartidoSeleccionado(partidoId);
         setShowConfirm(true);
     };
 
@@ -81,13 +78,10 @@ const Votar = () => {
         setShowConfirm(false);
         try {
             const usuario = JSON.parse(localStorage.getItem('usuario'));
-            let votoData = { idPartido: votoPendiente.partidoId, idCandidato: votoPendiente.candidatoId };
-
-            if (usuario?.tipo === 'estudiante') {
-                votoData.idEstudiante = usuario.id;
-            } else if (usuario?.tipo === 'docente') {
-                votoData.idDocente = usuario.id;
-            }
+            const votoData = {
+                idPartido: partidoSeleccionado,
+                idVotante: usuario.id
+            };
 
             await votosService.createVoto(votoData);
             setShowSuccess(true);
@@ -116,21 +110,16 @@ const Votar = () => {
                             alt={partido.nombrePartido}
                             className="w-full h-32 object-cover rounded mb-4"
                         />
-                        <h3 className="text-xl font-semibold mb-4">{partido.nombrePartido}</h3>
-                        <ul>
-                            {getCandidatosPorPartido(partido.idPartido).map(candidato => (
-                                <li key={candidato.idCandidato} className="mb-2 flex justify-between items-center">
-                                    <span>{candidato.cargo}</span>
-                                    <button
-                                        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
-                                        onClick={() => handleOpenConfirm(partido.idPartido, candidato.idCandidato)}
-                                        disabled={yaVoto}
-                                    >
-                                        Votar
-                                    </button>
-                                </li>
-                            ))}
-                        </ul>
+                        <h3 className="text-xl font-semibold mb-4 text-center">{partido.nombrePartido}</h3>
+                        <div className="flex justify-center">
+                            <button
+                                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded"
+                                onClick={() => handleOpenConfirm(partido.idPartido)}
+                                disabled={yaVoto}
+                            >
+                                Votar por este partido
+                            </button>
+                        </div>
                     </div>
                 ))}
             </div>
