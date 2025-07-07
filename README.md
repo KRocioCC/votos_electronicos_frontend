@@ -1,70 +1,54 @@
-# Getting Started with Create React App
+# 🗳️ Sistema de Votos Electrónicos - Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Frontend del proyecto **Sistema de Votos Electrónicos**, desarrollado con **React**. Está enfocado para la Universidad Mayor de San Andrés (UMSA), permitiendo a estudiantes y docentes autenticarse y emitir.
+---
 
-## Available Scripts
+## 🛠️ Tecnologías y librerías utilizadas
 
-In the project directory, you can run:
+- **React**
+- **Axios** – Para la comunicación HTTP con el backend.
+- **React Router DOM** – Para el manejo de rutas y navegación.
+- **Librería de dashboards en React** – Para visualizar estadísticas como la cantidad de votos por partido y el ranking de carreras.
+- **Bootstrap / CSS personalizado** – Para estilos y diseño responsivo (si aplica).
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## ⚙️ Funcionalidades implementadas
 
-### `npm test`
+- Autenticación para estudiantes, docentes y administradores mediante su correo institucional (@umsa.bo).
+- Pantalla de login y validación de usuarios.
+- Votación por partidos con interfaz sencilla y clara.
+- Visualización de dashboard:
+  - Gráfica con cantidad de votos por partido.
+  - Ranking de carreras con más votos (Top 3).
+- Gestión de usuarios y entidades (si está habilitado el panel administrador):
+  - Estudiantes  
+  - Docentes  
+  - Partidos  
+  - Candidatos  
+  - Votos
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## 🔗 Conexión con el backend
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+La conexión al backend se realiza mediante **Axios**, configurado en el archivo `api.js`. Todos los endpoints del backend son consumidos desde los componentes y páginas correspondientes utilizando esta configuración.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## IMAGENES
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### VISTA DESDE ADMINISTRADOR
+<img width="1280" alt="Captura de Pantalla 2025-07-07 a la(s) 17 45 43" src="https://github.com/user-attachments/assets/e4625a01-def8-453c-b160-f644ed1997cf" />
+<img width="1280" alt="Captura de Pantalla 2025-07-07 a la(s) 17 46 03" src="https://github.com/user-attachments/assets/02f265e9-d44b-496c-bbd1-0e24b615dc61" />
 
-### `npm run eject`
+<img width="1278" alt="Captura de Pantalla 2025-07-07 a la(s) 17 42 42" src="https://github.com/user-attachments/assets/7178af8d-7a66-487b-a54a-5b24aec8fb90" />
+<img width="1280" alt="Captura de Pantalla 2025-07-07 a la(s) 17 43 22" src="https://github.com/user-attachments/assets/97fc9b2c-37e7-4697-b751-8ee969580449" />
+<img width="1280" alt="Captura de Pantalla 2025-07-07 a la(s) 17 43 45" src="https://github.com/user-attachments/assets/c82363be-eb67-41ed-b9a2-ecd5273e75fd" />
+<img width="1280" alt="Captura de Pantalla 2025-07-07 a la(s) 17 45 08" src="https://github.com/user-attachments/assets/665f2a9a-41a7-4c8e-9dfe-5889fb94ff2d" />
+<img width="1280" alt="Captura de Pantalla 2025-07-07 a la(s) 17 46 24" src="https://github.com/user-attachments/assets/c42f0ced-1db8-473a-969e-66fd17d2b3e0" />
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### VISTA DESDE ESTUDIANTE O DOCENTE
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<img width="1280" alt="Captura de Pantalla 2025-07-07 a la(s) 17 48 31" src="https://github.com/user-attachments/assets/98b33e06-bc3d-484a-b1ba-d4676bca31ac" />
+<img width="1280" alt="Captura de Pantalla 2025-07-07 a la(s) 17 48 52" src="https://github.com/user-attachments/assets/25111f73-d25f-4af0-8679-968617596fba" />
+<img width="1280" alt="Captura de Pantalla 2025-07-07 a la(s) 17 49 45" src="https://github.com/user-attachments/assets/3c17a021-c97d-47f9-9b06-ccb92271bf30" />
